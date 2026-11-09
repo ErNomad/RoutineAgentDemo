@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4f0" id="theme-color">
+    <title>Routine — Agent Playground</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Routine Agent Playground home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>routine<span class="brand-period">.</span></span>
+        </a>
+        <div class="topbar-note"><span class="live-dot"></span> MULTI-AGENT PLAYGROUND</div>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">A tiny system, working together</p>
+        <h1 id="page-title">A day, coordinated<br>by <span>three agents.</span></h1>
+        <p class="intro-copy">Send a greeting. Watch it travel from one agent to the next.</p>
+      </section>
+
+      <section class="workspace" aria-label="Routine agent demonstration">
+        <aside class="control-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Your routine</p>
+              <h2>Set the moment</h2>
+            </div>
+            <span class="sparkle" aria-hidden="true">✳</span>
+          </div>
+
+          <div class="routine-state" aria-live="polite">
+            <span class="state-icon" id="state-icon" aria-hidden="true">✦</span>
+            <div>
+              <span class="state-label">CURRENT STATE</span>
+              <p id="state-label">Ready for a greeting</p>
+            </div>
+          </div>
+
+          <div class="greeting-actions">
+            <button class="greeting-button morning-button" type="button" data-greeting="Good morning">
+              <span class="button-icon" aria-hidden="true">☀</span>
+              <span><strong>Good morning</strong><small>Start the day</small></span>
+              <span class="button-arrow" aria-hidden="true">↗</span>
+            </button>
+            <button class="greeting-button night-button" type="button" data-greeting="Good night">
+              <span class="button-icon" aria-hidden="true">☾</span>
+              <span><strong>Good night</strong><small>Wind down</small></span>
+              <span class="button-arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
+
+          <p class="control-hint">The routine alternates between day and sleep.</p>
+          <div class="timer-grid" aria-label="Routine timers">
+            <section class="timer-card day-clock" aria-label="Day timer">
+              <span class="timer-icon" aria-hidden="true">☀</span>
+              <span class="timer-name">DAY</span>
+              <output class="timer-value" id="day-clock">00:00:00</output>
+              <span class="timer-status" id="day-clock-status">Not started</span>
+            </section>
+            <section class="timer-card night-clock" aria-label="Sleep timer">
+              <span class="timer-icon" aria-hidden="true">☾</span>
+              <span class="timer-name">SLEEP</span>
+              <output class="timer-value" id="sleep-clock">00:00:00</output>
+              <span class="timer-status" id="sleep-clock-status">Not started</span>
+            </section>
+          </div>
+        </aside>
+
+        <section class="conversation-panel" aria-labelledby="conversation-title">
+          <header class="conversation-header">
+            <div>
+              <p class="eyebrow">Live communication</p>
+              <h2 id="conversation-title">Inside the system</h2>
+            </div>
+            <span class="connection-status" id="connection-status">
+              <span class="status-dot"></span><span id="connection-label">Connecting</span>
+            </span>
+          </header>
+
+          <div class="agent-flow" id="agent-flow" aria-label="Messages travel from Agent 1 to Agent 2 to Agent 3">
+            <article class="agent-box agent-one" id="agent-one">
+              <span class="agent-number">AGENT 01</span>
+              <span class="agent-glyph" aria-hidden="true">↳</span>
+              <h3>Receiver</h3>
+              <p class="agent-description">Listens for your greeting</p>
+              <span class="agent-status" id="agent-one-status">Waiting</span>
+            </article>
+            <div class="communication-lane" id="lane-one" aria-hidden="true">
+              <span class="lane-rail"></span>
+              <span class="message-packet" id="packet-one"></span>
+            </div>
+            <article class="agent-box agent-two" id="agent-two">
+              <span class="agent-number">AGENT 02</span>
+              <span class="agent-glyph" aria-hidden="true">⤳</span>
+              <h3>Translator</h3>
+              <p class="agent-description">Turns greetings into instructions</p>
+              <span class="agent-status" id="agent-two-status">Waiting</span>
+            </article>
+            <div class="communication-lane" id="lane-two" aria-hidden="true">
+              <span class="lane-rail"></span>
+              <span class="message-packet" id="packet-two"></span>
+            </div>
+            <article class="agent-box agent-three" id="agent-three">
+              <span class="agent-number">AGENT 03</span>
+              <span class="agent-glyph" aria-hidden="true">◷</span>
+              <h3>Timekeeper</h3>
+              <p class="agent-description">Starts and tracks your timers</p>
+              <span class="agent-status" id="agent-three-status">Waiting</span>
+            </article>
+          </div>
+          <section class="chart-panel" aria-labelledby="chart-title">
+            <header class="chart-header">
+              <div>
+                <p class="eyebrow">Your routine history</p>
+                <h3 id="chart-title">Wake &amp; sleep duration</h3>
+                <p class="chart-note">Each day shows adjacent red awake and blue sleep duration boxes. Hover for exact times.</p>
+              </div>
+              <div class="chart-legend" aria-label="Chart legend">
+                <span><i class="wake-key"></i> Wake</span>
+                <span><i class="sleep-key"></i> Sleep</span>
+              </div>
+            </header>
+            <svg class="routine-chart" id="routine-chart" viewBox="0 0 720 400" role="img" aria-label="Daily awake and sleep intervals">
+              <title>Daily awake and sleep intervals</title>
+              <desc id="chart-description">Dates are on the horizontal axis and time of day is on the vertical axis. Adjacent red and blue bars show awake and sleep durations.</desc>
+            </svg>
+            <p class="chart-empty" id="chart-empty">Wake and sleep intervals will appear here as your routine runs.</p>
+          </section>
+          <p class="error-message" id="error-message" role="alert" hidden></p>
+          <footer class="conversation-footer"><span class="pulse"></span> Messages move through each agent in sequence</footer>
+        </section>
+      </section>
+
+      <footer class="page-footer">
+        <span>AN INTERACTIVE MULTI-AGENT DEMO</span>
+        <span>ONE GREETING, THREE PERSPECTIVES</span>
+      </footer>
+    </main>
+  </body>
+</html>
